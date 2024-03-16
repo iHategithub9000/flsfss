@@ -1,0 +1,32 @@
+{
+  "allow-removal": true,
+  "allow-writing": true,
+  "allowed-origin": "https://file-locker.glitch.me",
+  "generated-filename-length": 36,
+  "log": true,
+  "max-query-param-length": 1000,
+  "password": null,
+  "password-enabled": false,
+  "port": 3000,
+  "restrict-origin": false,
+  "server-texts": {
+    "error.password.notprovided": "No password was provided. Send the password in the query parameter 'auth'",
+    "error.password.incorrect": "Incorrect password.",
+    "error.route.nopermission": "Origin does not have permission to access this endpoint.",
+    "error.route.nonexistent": "Route does not exist.",
+    "error.file.missing": "This public file does not exist!",
+    "error.query.missing.filename": "Query parameter 'filename' is missing!",
+    "error.query.missing.content": "Query parameter 'content' is missing!",
+    "error.file.remove.notallowed": "This server does not allow removing files",
+    "error.file.write.notallowed": "This server does not allow writing files.",
+    "log.query.maxexceeded": "Maximum query param length exceeded.",
+    "log.server.start.message.begin": "FLSFSS is listening on port ",
+    "log.file.removed.end": " got removed",
+    "log.file.created.end": " got created",
+    "log.file.read.end": " got read",
+    "log.connection.first": "Connection #",
+    "log.connection.second": " with UserAgent ",
+    "log.connection.third": " and Origin ",
+    "route.root": "This is the File Locker Shared File Store Server."
+  }
+}
