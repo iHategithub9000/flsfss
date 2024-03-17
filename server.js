@@ -4,6 +4,7 @@ const LZUTF8 = require('lzutf8');
 const app = express();
 const PORT = require("./config.json")["port"];
 
+
 function generateRandomString(length) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
@@ -64,9 +65,7 @@ app.get('/file/read', (req, res) => {
             "err": false,
             "errtext": null
           },
-          "content": LZUTF8.decompress(data, {
-            inputEncoding: "StorageBinaryString"
-          })
+          "content": LZUTF8.decompress(new Uint8Array(LZUTF8.decompress(data,{inputEncoding:"StorageBinaryString"}).split(',')))
         })
       } else {
         res.status(200).json({
@@ -105,9 +104,7 @@ app.post('/file/write', (req, res) => {
       let name = generateRandomString(require("./config.json")["generated-filename-length"])
       if (!req.query.content) throw new Error();
       if (require("./config.json")["enable-compression"]) {
-        fs.writeFile("./sharedfiles/.shared-" + name, LZUTF8.compress(req.query.content, {
-          outputEncoding: "StorageBinaryString"
-        }), (err) => {
+        fs.writeFile("./sharedfiles/.shared-" + name, LZUTF8.compress(LZUTF8.compress(req.query.content).toString(),{outputEncoding:"StorageBinaryString"}), (err) => {
           if (err) {
             res.status(500).json({
               "state": {
