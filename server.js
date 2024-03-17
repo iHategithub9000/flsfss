@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const LZUTF8 = require('lzutf8');
 const app = express();
 const PORT = require("./config.json")["port"];
 
@@ -57,13 +58,25 @@ app.get('/file/read', (req, res) => {
       } else {
         if (require("./config.json")["log"]) console.log(req.query.filename + require("./config.json")["server-texts"]["log.file.read.end"])
       }
-      res.status(200).json({
-        "state": {
-          "err": false,
-          "errtext": null
-        },
-        "content": data
-      })
+      if (require("./config.json")["enable-compression"]) {
+        res.status(200).json({
+          "state": {
+            "err": false,
+            "errtext": null
+          },
+          "content": LZUTF8.decompress(data, {
+            inputEncoding: "StorageBinaryString"
+          })
+        })
+      } else {
+        res.status(200).json({
+          "state": {
+            "err": false,
+            "errtext": null
+          },
+          "content": data
+        })
+      }
     });
   } catch {
     res.status(400).json({
@@ -91,27 +104,53 @@ app.post('/file/write', (req, res) => {
     try {
       let name = generateRandomString(require("./config.json")["generated-filename-length"])
       if (!req.query.content) throw new Error();
-      fs.writeFile("./sharedfiles/.shared-" + name, req.query.content, (err) => {
-        if (err) {
-          res.status(500).json({
-            "state": {
-              "err": true,
-              "errtext": "Internal Server Error"
-            },
-            "filename": null
-          })
-          return;
-        } else {
-          if (require("./config.json")["log"]) console.log(".shared-" + name + require("./config.json")["server-texts"]["log.file.created.end"])
-        }
-      });
-      res.status(200).json({
-        "state": {
-          "err": false,
-          "errtext": null
-        },
-        "filename": ".shared-" + name
-      })
+      if (require("./config.json")["enable-compression"]) {
+        fs.writeFile("./sharedfiles/.shared-" + name, LZUTF8.compress(req.query.content, {
+          outputEncoding: "StorageBinaryString"
+        }), (err) => {
+          if (err) {
+            res.status(500).json({
+              "state": {
+                "err": true,
+                "errtext": "Internal Server Error"
+              },
+              "filename": null
+            })
+            return;
+          } else {
+            if (require("./config.json")["log"]) console.log(".shared-" + name + require("./config.json")["server-texts"]["log.file.created.end"])
+          }
+        });
+        res.status(200).json({
+          "state": {
+            "err": false,
+            "errtext": null
+          },
+          "filename": ".shared-" + name
+        })
+      } else {
+        fs.writeFile("./sharedfiles/.shared-" + name, req.query.content, (err) => {
+          if (err) {
+            res.status(500).json({
+              "state": {
+                "err": true,
+                "errtext": "Internal Server Error"
+              },
+              "filename": null
+            })
+            return;
+          } else {
+            if (require("./config.json")["log"]) console.log(".shared-" + name + require("./config.json")["server-texts"]["log.file.created.end"])
+          }
+        });
+        res.status(200).json({
+          "state": {
+            "err": false,
+            "errtext": null
+          },
+          "filename": ".shared-" + name
+        })
+      }
     } catch {
       res.status(400).json({
         "state": {
