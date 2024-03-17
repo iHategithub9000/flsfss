@@ -9,6 +9,7 @@
   "password-enabled": false,
   "port": 3000,
   "restrict-origin": false,
+  "enable-compression": true,
   "server-texts": {
     "error.password.notprovided": "No password was provided. Send the password in the query parameter 'auth'",
     "error.password.incorrect": "Incorrect password.",
