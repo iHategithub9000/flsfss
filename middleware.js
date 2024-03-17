@@ -5,13 +5,13 @@ module.exports = function(req, res, password, next) {
     console.log(require("./config.json")["server-texts"]["log.connection.first"] + connectionCnt + ": " + req.method + " " + req.url + require("./config.json")["server-texts"]["log.connection.second"] + req.get('User-Agent') + require("./config.json")["server-texts"]["log.connection.third"] + req.headers.origin)
   }
   if (require("./config.json")["restrict-origin"]) {
-    // if not visited in browser then check if origin is allowed, if it is restrict methods to POST and GET
     if (req.headers.origin && (req.headers.origin === require("./config.json")["allowed-origin"])) {
       res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
       res.setHeader('Access-Control-Allow-Methods', 'POST, GET, DELETE');
     }
   } else {
     res.setHeader('Access-Control-Allow-Origin', "*");
+    res.setHeader('Access-Control-Allow-Methods', '*');
   }
   if (require("./config.json")["password-enabled"]) {
     if (!req.query.auth) {
