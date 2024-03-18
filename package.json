@@ -1,16 +1,16 @@
 {
-  "name": "app",
+  "name": "flsfss",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["server","file","locker","filelocker","file locker","shared","flsfss","flsfs"],
+  "author": "painscreen (yourhardworkgone) on discord",
   "license": "ISC",
   "dependencies": {
+    "cli-color": "^2.0.4",
     "express": "^4.18.3",
     "lzutf8": "^0.6.3"
   }
