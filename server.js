@@ -3,6 +3,11 @@ const fs = require('fs');
 const LZUTF8 = require('lzutf8');
 const app = express();
 const PORT = require("./config.json")["port"];
+const clc = require("cli-color");
+const error = clc.red.bold;
+const warn = clc.yellow.bold;
+const info = clc.blue;
+const debug = clc.magenta;
 
 
 function generateRandomString(length) {
@@ -57,7 +62,7 @@ app.get('/file/read', (req, res) => {
         })
         return;
       } else {
-        if (require("./config.json")["log"]) console.log(req.query.filename + require("./config.json")["server-texts"]["log.file.read.end"])
+        if (require("./config.json")["log"]) console.log(debug(req.query.filename + require("./config.json")["server-texts"]["log.file.read.end"]))
       }
       if (require("./config.json")["enable-compression"]) {
         res.status(200).json({
@@ -115,7 +120,7 @@ app.post('/file/write', (req, res) => {
             })
             return;
           } else {
-            if (require("./config.json")["log"]) console.log(".shared-" + name + require("./config.json")["server-texts"]["log.file.created.end"])
+            if (require("./config.json")["log"]) console.log(debug(".shared-" + name + require("./config.json")["server-texts"]["log.file.created.end"]))
           }
         });
         res.status(200).json({
@@ -137,7 +142,7 @@ app.post('/file/write', (req, res) => {
             })
             return;
           } else {
-            if (require("./config.json")["log"]) console.log(".shared-" + name + require("./config.json")["server-texts"]["log.file.created.end"])
+            if (require("./config.json")["log"]) console.log(debug(".shared-" + name + require("./config.json")["server-texts"]["log.file.created.end"]))
           }
         });
         res.status(200).json({
@@ -192,7 +197,7 @@ app.delete('/file/remove', (req, res) => {
           })
           return;
         } else {
-          if (require("./config.json")["log"]) console.log(req.query.filename + require("./config.json")["server-texts"]["log.file.removed.end"])
+          if (require("./config.json")["log"]) console.log(debug(req.query.filename + require("./config.json")["server-texts"]["log.file.removed.end"]))
           res.status(200).json({
             "state": {
               "err": false,
@@ -238,5 +243,5 @@ app.get('*', function(req, res) {
 });
 
 app.listen(PORT, () => {
-  if (require("./config.json")["log"]) console.log(require("./config.json")["server-texts"]["log.server.start.message.begin"] + `${PORT}`);
+  if (require("./config.json")["log"]) console.log(debug(require("./config.json")["server-texts"]["log.server.start.message.begin"] + `${PORT}`));
 });
