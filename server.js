@@ -23,7 +23,7 @@ app.use((req, res, next) => {
   require("./middleware.js")(req, res, require("./config.json")["password"], next);
 });
 
-app.get("*",()=>{})
+//app.get("*",()=>{})
 
 app.get('/', (req, res) => {
   if (require("./config.json")["restrict-origin"])
