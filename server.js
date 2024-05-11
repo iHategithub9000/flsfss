@@ -23,6 +23,8 @@ app.use((req, res, next) => {
   require("./middleware.js")(req, res, require("./config.json")["password"], next);
 });
 
+app.get("*",()=>{})
+
 app.get('/', (req, res) => {
   if (require("./config.json")["restrict-origin"])
     if (req.headers.origin) {
@@ -57,6 +59,7 @@ app.get('/file/read', (req, res) => {
           },
           "content": "nuh uh"
         })
+    return;
   }
   try {
     if (!req.query.filename) throw new Error();
@@ -103,6 +106,7 @@ app.get('/file/read', (req, res) => {
 });
 
 app.post('/file/write', (req, res) => {
+  
   if (require("./config.json")["allow-writing"]) {
     if (require("./config.json")["restrict-origin"])
       if (req.headers.origin !== require("./config.json")["allowed-origin"]) {
@@ -183,6 +187,16 @@ app.post('/file/write', (req, res) => {
 });
 
 app.delete('/file/remove', (req, res) => {
+  if (require("./config.json")["disable-twodot"]&&req.query.filename.includes("..")){
+    res.status(200).json({
+          "state": {
+            "err": true,
+            "errtext": "nuh uh"
+          },
+          "content": "nuh uh"
+        })
+    return;
+  }
   if (require("./config.json")["allow-removal"]) {
     if (require("./config.json")["restrict-origin"])
       if (req.headers.origin !== require("./config.json")["allowed-origin"]) {
