@@ -3,20 +3,21 @@
 ```
 git clone https://github.com/iHategithub9000/flsfss.git
 ```
-2. CD into the repo
+2. CD into the repo:
 ```
 cd flsfss
 ```
-3. Install dependencies
+3. Install dependencies:
 ```
 npm i
 ```
-4. If you prefer to use anything like pm2 or nodemon, you can just use that.
+4. Set up the configuration in config.json
+5. If you prefer to use anything like pm2 or nodemon, you can just use that:
 ```
 npm i nodemon -g
 nodemon server.js
 ```
-5. But plain old node will work too.
+6. But plain old node will work too:
 ```
 node server.js
 ```
