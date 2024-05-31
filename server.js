@@ -51,17 +51,18 @@ app.get('/file/read', (req, res) => {
       });
       return;
     }
-  if (require("./config.json")["disable-twodot"]&&req.query.filename.includes("..")){
-    res.status(200).json({
-          "state": {
-            "err": false,
-            "errtext": null
-          },
-          "content": "nuh uh"
-        })
-    return;
-  }
+  
   try {
+    if (require("./config.json")["disable-twodot"]&&req.query.filename.includes("..")){
+      res.status(200).json({
+            "state": {
+              "err": false,
+              "errtext": null
+            },
+            "content": "nuh uh"
+          })
+      return;
+    }
     if (!req.query.filename) throw new Error();
     fs.readFile("./sharedfiles/" + req.query.filename, 'utf8', (err, data) => {
       if (err) {
